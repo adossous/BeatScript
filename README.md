@@ -4,7 +4,7 @@
 
 A Python script that converts drum patterns into a playable MIDI file — built as a final project for Intro to Python & Problem Solving.
 
-Replicates the drum line of "Thats What You get by Paramore" with a intro,verse, and chorus section.
+Replicates the drum line of "Thats What You get by Paramore" with an intro,verse, and chorus section.
 
 ---
 
