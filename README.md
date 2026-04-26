@@ -1,28 +1,35 @@
-# finalProjectS2026
+# FinalProjectS2026
 
-Some examples of cool things you can do in markdown.
+# BeatScript: Python MIDI Beat Generator
 
-- It supports lists
-- These lists are readable here
-  - The sublists are also legible
-  - Yes I could nest this lists further.
-* Bottom text
-* [Link to youtube](youtube.com)
-* **bold** and *italics* are supported 
+A Python script that converts drum patterns into a playable MIDI file — built as a final project for Intro to Python & Problem Solving.
 
-Example of python code
+Replicates the drum line of "Blinding Lights by The Weeknd" with a verse and chorus section.
 
-```python
-print("Chicken!")
+---
+
+## Installation
+
+```bash
+pip3 install mido
 ```
 
-## Section
+## Usage
 
-This is the perfect place to put some lorem ipsum.
+```bash
+python3 beat.py
+```
 
-### subsection
+Drag the generated `BlindingLights.mid` file into Logic Pro and press play.
 
-See preposal.md
-#### This is an even more sub section
+---
 
-##### This is about as sub as sub sectioning goes
+## Concepts Used
+- Lists & dictionaries
+- Loops & conditionals
+- Functions
+- Third-party library integration (mido)
+
+---
+
+Made by Amari Dossous for Intro to Python & Problem Solving Final Project
