@@ -32,4 +32,4 @@ Drag the generated `BlindingLights.mid` file into Logic Pro and press play.
 
 ---
 
-Made by Amari Dossous for Intro to Python & Problem Solving Final Project
+Made by Amari Dossous for Introduction to Problem solving and Programming in Python
