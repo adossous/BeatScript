@@ -19,7 +19,7 @@ https://youtu.be/-8iv50q8nmo
 
 ```bash
 pip3 install mido
-## Usage
+Usage
 '''bash
 python3 beatscript.py
 
