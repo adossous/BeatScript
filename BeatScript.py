@@ -38,7 +38,7 @@ outro_pattern = {
     "hihat":      [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,0,0],
     "open_hihat": [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,1,0],
 }
-# Universial Midi note map
+# Universal Midi note map
 note_map = {
     "kick":       36,
     "snare":      38,
