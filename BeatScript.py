@@ -1,84 +1,118 @@
 from mido import MidiFile, MidiTrack, Message, MetaMessage, bpm2tempo
 
-BPM = 131           # tempo of That's What You Get by Paramore
-STEPS = 12
-BARS = 12
-VELOCITY = 110
-# key = instrument name, value = list of 12 steps
-# 1 = hit, 0 = silence
-intro_pattern = {
-    "kick":       [1,0,0, 0,1,0, 0,0,1, 0,0,0],
-    "snare":      [0,0,0, 1,0,0, 0,0,0, 1,0,0],
-    "hihat":      [1,0,1, 1,0,1, 1,0,1, 1,0,1],
-    "open_hihat": [0,0,0, 0,0,0, 0,0,0, 0,0,1],
+BPM = 105     #tempo of Rolling In The Deep By Adele
+VELOCITY = 100
+STEPS = 16  # 4/4 throughout — always 16 sixteenth-note steps
+ # drum patterns
+verse_pattern = {
+    "kick":       [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+    "snare":      [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+    "hihat":      [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
 }
 
-verse_pattern = {
-    "kick":       [1,0,0, 1,0,0, 0,0,1, 0,0,0],
-    "snare":      [0,0,0, 0,0,0, 0,0,0, 1,0,0],
-    "hihat":      [1,1,1, 1,1,1, 1,1,1, 1,1,1],
-    "foot_hihat": [1,0,0, 0,0,0, 1,0,0, 0,0,0],
+pre_chorus_pattern = {
+    "kick":       [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,0,0],
+    "snare":      [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+    "hihat":      [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,1,0],
 }
 
 chorus_pattern = {
-    "kick":       [1,0,0, 1,0,0, 1,0,0, 0,0,0],
-    "snare":      [0,0,0, 1,0,0, 0,0,0, 1,0,0],
-    "hihat":      [1,1,1, 1,1,1, 1,1,1, 1,1,0],
-    "open_hihat": [0,0,0, 0,0,0, 0,0,0, 0,0,1],
-    "crash": [1,0,0, 0,0,0, 0,0,0, 0,0,0],
-    "floor_tom": [0,0,0, 0,0,0, 0,0,0, 0,0,1],
+    "crash":      [1,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0],
+    "kick":       [1,0,0,1, 0,0,1,0, 1,0,0,1, 0,0,1,0],
+    "snare":      [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+    "hihat":      [1,1,1,1, 1,1,1,1, 1,1,1,1, 1,1,1,0],
+    "open_hihat": [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1],
 }
 
-note_map = {                                        #MIDI Note Map
-    "kick":  36,                                   # Translates drum names into MIDI note numbers
-    "snare": 38,                                   # These universal across every DAW
-    "hihat": 42,
+bridge_pattern = {
+    "snare":      [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+}
+
+breakdown_pattern = {
+    "snare":      [1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],
+}
+
+outro_pattern = {
+    "kick":       [1,0,0,0, 0,0,0,0, 1,0,0,0, 0,0,0,0],
+    "snare":      [0,0,0,0, 1,0,0,0, 0,0,0,0, 1,0,0,0],
+    "hihat":      [1,0,1,0, 1,0,1,0, 1,0,1,0, 1,0,0,0],
+    "open_hihat": [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,1,0],
+}
+# Universial Midi note map
+note_map = {
+    "kick":       36,
+    "snare":      38,
+    "hihat":      42,
     "open_hihat": 46,
     "foot_hihat": 44,
-    "crash": 49,
-    "floor_tom": 43
+    "crash":      49,
+    "floor_tom":  43,
 }
-# Returns the correct pattern based on which bar we are on
-# bars 0-1 = intro, bars 2-4 = verse, bars 5-11 = chorus
+#song structure
+# (start_bar, end_bar_exclusive, pattern)
+sections = [
+    (0,   4,  verse_pattern),
+    (4,   6,  pre_chorus_pattern),
+    (6,   10, chorus_pattern),
+    (10,  14, verse_pattern),
+    (14,  16, pre_chorus_pattern),
+    (16,  20, chorus_pattern),
+    (20,  22, bridge_pattern),
+    (22,  24, breakdown_pattern),
+    (24,  28, chorus_pattern),
+    (28,  32, outro_pattern),
+]
+
 def get_pattern(bar):
-    if bar < 2:
-        return intro_pattern
-    elif bar < 5:
-        return verse_pattern
-    else:
-        return chorus_pattern
-# Create the MIDI file and a single track
+    for start, end, pattern in sections:
+        if start <= bar < end:
+            return pattern
+    return verse_pattern
+
+#MIDI File setup
 mid = MidiFile(type=0, ticks_per_beat=480)
 track = MidiTrack()
 mid.tracks.append(track)
-# Convert BPM into microseconds per beat (this is the format MIDI uses internally)
+
 tempo = bpm2tempo(BPM)
 track.append(MetaMessage('set_tempo', tempo=tempo, time=0))
+#timing match
+ticks_per_step = mid.ticks_per_beat // 4   # 120 ticks per 16th note
+note_duration  = ticks_per_step - 10       # notes ring for 110 ticks
 
-ticks_per_step = mid.ticks_per_beat // 4
+TOTAL_BARS = 32
 
-for bar in range(BARS):
+for bar in range(TOTAL_BARS):
     beat_pattern = get_pattern(bar)
-    for step in range(STEPS):
-        hits = []
 
+    # Build event list for this bar: (abs_tick, 'on'/'off', note, vel)
+    events = []
+    for step in range(STEPS):
         for drum, pattern in beat_pattern.items():
             if pattern[step] == 1:
-                hits.append(drum)
+                abs_tick = step * ticks_per_step
+                note = note_map[drum]
+                events.append((abs_tick,                 'on',  note, VELOCITY))
+                events.append((abs_tick + note_duration, 'off', note, 0))
 
-        for i, drum in enumerate(hits):
-            time = ticks_per_step if i == 0 else 0
-            track.append(Message('note_on', channel=9, note=note_map[drum],
-                                 velocity=VELOCITY, time=time))
+    # Sorting drum events
+    events.sort(key=lambda e: (e[0], 0 if e[1] == 'on' else 1))
 
-        for i, drum in enumerate(hits):
-            time = 10 if i == 0 else 0
-            track.append(Message('note_off', channel=9, note=note_map[drum],
-                                 velocity=0, time=time))
+    # Convert absolute ticks to delta ticks and write to track
+    prev_tick = 0
+    for abs_tick, kind, note, vel in events:
+        delta = abs_tick - prev_tick
+        if kind == 'on':
+            track.append(Message('note_on',  channel=9, note=note, velocity=vel, time=delta))
+        else:                                  #channel=9 is the standard midi drum channel
+            track.append(Message('note_off', channel=9, note=note, velocity=0,   time=delta))
+        prev_tick = abs_tick
 
-        if not hits:
-            track.append(Message('note_on', channel=9, note=36,
-                                 velocity=0, time=ticks_per_step))
+    # Advance to end of bar
+    bar_end = STEPS * ticks_per_step
+    track.append(Message('note_off', channel=9, note=36, velocity=0,
+                         time=bar_end - prev_tick))
 
-mid.save("ThatsWhatYouGet.mid")
+mid.save("RollingInTheDeep.mid")
+print("Beat saved as RollingInTheDeep.mid!")
 print("Beat saved as ThatsWhatYouGet.mid!")
