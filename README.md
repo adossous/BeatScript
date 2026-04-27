@@ -4,7 +4,7 @@
 
 A Python script that converts drum patterns into a playable MIDI file — built as a final project for Intro to Python & Problem Solving.
 
-Replicates the drum line of "Thats What You get by Paramore" with an intro,verse, and chorus section.
+Closely replicates the drum line of "Rolling In The Deep By Adele" with a breakdown of the song sections.
 
 ---
 
@@ -17,10 +17,10 @@ pip3 install mido
 ## Usage
 
 ```bash
-python3 beat.py
+python3 beatscript.py
 ```
 
-Drag the generated `BlindingLights.mid` file into Logic Pro and press play.
+Drag the generated `RollingInTheDeep.mid` file into Logic Pro and press play.
 
 ---
 
@@ -28,6 +28,7 @@ Drag the generated `BlindingLights.mid` file into Logic Pro and press play.
 - Lists & dictionaries
 - Loops & conditionals
 - Functions
+- sorting & timing logic
 - Third-party library integration (mido)
 
 ---
