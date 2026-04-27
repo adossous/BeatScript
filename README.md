@@ -8,17 +8,20 @@ Closely replicates the drum line of "Rolling In The Deep By Adele" with a breakd
 
 ---
 
+## Demo
+
+Watch the project in action:  
+https://youtu.be/-8iv50q8nmo
+
+---
+
 ## Installation
 
 ```bash
 pip3 install mido
-```
-
 ## Usage
-
-```bash
+'''bash
 python3 beatscript.py
-```
 
 Drag the generated `RollingInTheDeep.mid` file into Logic Pro and press play.
 
