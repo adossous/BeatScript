@@ -20,7 +20,6 @@ https://youtu.be/-8iv50q8nmo
 ```bash
 pip3 install mido
 Usage
-'''bash
 python3 beatscript.py
 
 Drag the generated `RollingInTheDeep.mid` file into Logic Pro and press play.
