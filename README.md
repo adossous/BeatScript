@@ -1,6 +1,4 @@
-# FinalProjectS2026
-
-## BeatScript: Python MIDI Beat Generator
+# BeatScript: Python MIDI Beat Generator
 
 A Python script that converts drum patterns into a playable MIDI file — built as a final project for Intro to Python & Problem Solving.
 
